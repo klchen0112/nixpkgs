@@ -41733,4 +41733,6 @@ with pkgs;
   wttrbar = callPackage ../applications/misc/wttrbar { };
 
   tidgi = callPackage ../applications/misc/tidgi { };
+
+  marginnote = callPackage ../applications/misc/marginnote { };
 }
