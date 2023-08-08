@@ -41731,4 +41731,6 @@ with pkgs;
   gitrs = callPackage ../tools/misc/gitrs { };
 
   wttrbar = callPackage ../applications/misc/wttrbar { };
+
+  tidgi = callPackage ../applications/misc/tidgi { };
 }
