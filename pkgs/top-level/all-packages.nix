@@ -41758,4 +41758,6 @@ with pkgs;
   gitrs = callPackage ../tools/misc/gitrs { };
 
   wttrbar = callPackage ../applications/misc/wttrbar { };
+
+  emby-theater = callPackage ../applications/video/emby-theater { };
 }
