@@ -1,27 +1,29 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, fetchpatch
-, bzip2
-, cli11
-, cmake
-, curl
-, ghc_filesystem
-, libarchive
-, libsolv
-, yaml-cpp
-, nlohmann_json
-, python3
-, reproc
-, spdlog
-, tl-expected
-}:
-
-let
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  fetchpatch,
+  bzip2,
+  cli11,
+  cmake,
+  curl,
+  ghc_filesystem,
+  libarchive,
+  libsolv,
+  yaml-cpp,
+  nlohmann_json,
+  python3,
+  reproc,
+  spdlog,
+  tl-expected,
+  simdjson,
+}: let
   libsolv' = libsolv.overrideAttrs (oldAttrs: {
-    cmakeFlags = oldAttrs.cmakeFlags ++ [
-      "-DENABLE_CONDA=true"
-    ];
+    cmakeFlags =
+      oldAttrs.cmakeFlags
+      ++ [
+        "-DENABLE_CONDA=true"
+      ];
 
     patches = [
       # Apply the same patch as in the "official" boa-forge build:
@@ -33,47 +35,49 @@ let
     ];
   });
 in
-stdenv.mkDerivation rec {
-  pname = "micromamba";
-  version = "1.5.8";
+  stdenv.mkDerivation rec {
+    pname = "micromamba";
+    version = "2.0.2";
 
-  src = fetchFromGitHub {
-    owner = "mamba-org";
-    repo = "mamba";
-    rev = "micromamba-" + version;
-    hash = "sha256-sxZDlMFoMLq2EAzwBVO++xvU1C30JoIoZXEX/sqkXS0=";
-  };
+    src = fetchFromGitHub {
+      owner = "mamba-org";
+      repo = "mamba";
+      rev = "micromamba-" + version;
+      hash = "sha256-gAU7ORlALQly152w5URu5Ra+OYOsa3BzT1v5jBo5/Ao=";
+    };
 
-  nativeBuildInputs = [ cmake ];
+    nativeBuildInputs = [cmake];
 
-  buildInputs = [
-    bzip2
-    cli11
-    nlohmann_json
-    curl
-    libarchive
-    yaml-cpp
-    libsolv'
-    reproc
-    spdlog
-    ghc_filesystem
-    python3
-    tl-expected
-  ];
+    buildInputs = [
+      bzip2
+      cli11
+      nlohmann_json
+      curl
+      libarchive
+      yaml-cpp
+      libsolv'
+      reproc
+      spdlog
+      ghc_filesystem
+      python3
+      tl-expected
+      simdjson
+    ];
 
-  cmakeFlags = [
-    "-DBUILD_LIBMAMBA=ON"
-    "-DBUILD_SHARED=ON"
-    "-DBUILD_MICROMAMBA=ON"
-    # "-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON"
-  ];
+    cmakeFlags = [
+      "-DBUILD_LIBMAMBA=ON"
+      "-DBUILD_LIBMAMBA=ON"
+      "-DBUILD_SHARED=ON"
+      "-DBUILD_MICROMAMBA=ON"
+      # "-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON"
+    ];
 
-  meta = with lib; {
-    description = "Reimplementation of the conda package manager";
-    homepage = "https://github.com/mamba-org/mamba";
-    license = licenses.bsd3;
-    platforms = platforms.all;
-    maintainers = with maintainers; [ mausch ];
-    mainProgram = "micromamba";
-  };
-}
+    meta = with lib; {
+      description = "Reimplementation of the conda package manager";
+      homepage = "https://github.com/mamba-org/mamba";
+      license = licenses.bsd3;
+      platforms = platforms.all;
+      maintainers = with maintainers; [mausch];
+      mainProgram = "micromamba";
+    };
+  }
