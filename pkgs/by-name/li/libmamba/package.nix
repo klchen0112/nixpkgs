@@ -19,7 +19,7 @@
 }:
 stdenv.mkDerivation rec {
   pname = "libmamba";
-  version = "1.5.8";
+  version = "2.0.2";
   src = fetchFromGitHub {
     owner = "mamba-org";
     repo = "mamba";
@@ -55,6 +55,6 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/mamba-org/mamba";
     license = lib.licenses.bsd3;
     platforms = lib.platforms.all;
-    maintainers = [ lib.maintainers.ericthemagician ];
+    maintainers = [lib.maintainers.ericthemagician];
   };
 }
