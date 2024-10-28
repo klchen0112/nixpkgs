@@ -38,7 +38,8 @@ stdenv.mkDerivation rec {
     nlohmann_json
     yaml-cpp
     simdjson
-    reproc
+    reproc.override
+    {static = static;}
     libsolv
     curl
     libarchive

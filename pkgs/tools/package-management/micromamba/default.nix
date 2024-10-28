@@ -23,6 +23,17 @@
       static = true;
       yaml-cpp = yaml-cpp-static;
     };
+  reproc-static = reproc.overrideAttrs (
+    oldAttrs: {
+      cmakeFlags = [
+        "-DCMAKE_INSTALL_LIBDIR=lib"
+        "-DBUILD_SHARED_LIBS=OFF"
+        "-DBUILD_STATIC_LIBS=ON"
+        "-DREPROC++=ON"
+        "-DREPROC_TEST=ON"
+      ];
+    }
+  );
 in
   stdenv.mkDerivation rec {
     pname = "micromamba";
@@ -38,7 +49,7 @@ in
     nativeBuildInputs = [cmake];
 
     buildInputs = [
-      reproc
+      reproc-static
       spdlog
       nlohmann_json
       tl-expected
