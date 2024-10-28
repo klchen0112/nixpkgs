@@ -16,6 +16,7 @@
   zstd,
   bzip2,
   python3Packages,
+  static ? stdenv.hostPlatform.isStatic,
 }:
 stdenv.mkDerivation rec {
   pname = "libmamba";
@@ -24,7 +25,7 @@ stdenv.mkDerivation rec {
     owner = "mamba-org";
     repo = "mamba";
     rev = "libmamba-${version}";
-    hash = "sha256-sxZDlMFoMLq2EAzwBVO++xvU1C30JoIoZXEX/sqkXS0=";
+    hash = "sha256-gAU7ORlALQly152w5URu5Ra+OYOsa3BzT1v5jBo5/Ao=";
   };
   nativeBuildInputs = [
     cmake
@@ -46,8 +47,10 @@ stdenv.mkDerivation rec {
   ];
 
   cmakeFlags = [
+    (lib.cmakeBool "BUILD_MAMBA" false)
+    (lib.cmakeBool "BUILD_MICROMAMBA" false)
     (lib.cmakeBool "BUILD_LIBMAMBA" true)
-    (lib.cmakeBool "BUILD_SHARED" true)
+    (lib.cmakeBool "BUILD_SHARED" static)
   ];
 
   meta = {

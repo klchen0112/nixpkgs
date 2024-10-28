@@ -12,14 +12,17 @@
   tl-expected,
   libmamba,
 }: let
-yaml-cpp' = yaml-cpp.override {static = true;};
-  libmamba' = libmamba.overrideAttrs (oldAttrs: {
-    cmakeFlags = [
-      (lib.cmakeBool "BUILD_LIBMAMBA" true)
-      (lib.cmakeBool "BUILD_STATIC" true)
-    ];
-  });
-
+  yaml-cpp-static =
+    yaml-cpp.override
+    {
+      static = true;
+    };
+  libmamba-static =
+    libmamba.override
+    {
+      static = true;
+      yaml-cpp = yaml-cpp-static;
+    };
 in
   stdenv.mkDerivation rec {
     pname = "micromamba";
@@ -29,7 +32,7 @@ in
       owner = "mamba-org";
       repo = "mamba";
       rev = "micromamba-" + version;
-      hash = "sha256-sxZDlMFoMLq2EAzwBVO++xvU1C30JoIoZXEX/sqkXS0=";
+      hash = "sha256-gAU7ORlALQly152w5URu5Ra+OYOsa3BzT1v5jBo5/Ao=";
     };
 
     nativeBuildInputs = [cmake];
@@ -41,13 +44,13 @@ in
       tl-expected
       zstd
       bzip2
-      yaml-cpp'
-      libmamba'
+      yaml-cpp-static
+      libmamba-static
     ];
-
     cmakeFlags = [
       (lib.cmakeBool "BUILD_MICROMAMBA" true)
       (lib.cmakeBool "BUILD_STATIC" true)
+      (lib.cmakeBool "BUILD_LIBMAMBA" false)
     ];
 
     meta = with lib; {
