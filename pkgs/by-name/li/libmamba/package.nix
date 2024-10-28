@@ -50,7 +50,8 @@ stdenv.mkDerivation rec {
     (lib.cmakeBool "BUILD_MAMBA" false)
     (lib.cmakeBool "BUILD_MICROMAMBA" false)
     (lib.cmakeBool "BUILD_LIBMAMBA" true)
-    (lib.cmakeBool "BUILD_SHARED" static)
+    (lib.cmakeBool "BUILD_SHARED" (!static))
+    (lib.cmakeBool "BUILD_STATIC" static)
   ];
 
   meta = {
