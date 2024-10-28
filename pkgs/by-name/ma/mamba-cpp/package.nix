@@ -4,6 +4,7 @@
   fetchFromGitHub,
   bzip2,
   cmake,
+  cli11,
   yaml-cpp,
   nlohmann_json,
   zstd,
@@ -34,6 +35,7 @@ stdenv.mkDerivation rec {
     tl-expected
     zstd
     bzip2
+    cli11
     yaml-cpp
     libmamba
   ];
