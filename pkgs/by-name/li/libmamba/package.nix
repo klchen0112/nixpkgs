@@ -19,6 +19,20 @@
   static ? stdenv.hostPlatform.isStatic,
 }: let
   reproc' = reproc.override {static = static;};
+  libsolv' = libsolv.override {static = static;};
+  yaml-cpp' =
+    yaml-cpp.override
+    {
+      static = true;
+    };
+  simdjson' =
+    simdjson.override
+    {
+      static = true;
+    };
+  curl' = curl.override {
+    pkgsStatic = true;
+  };
 in
   stdenv.mkDerivation rec {
     pname = "libmamba";
@@ -38,11 +52,11 @@ in
       spdlog
       tl-expected
       nlohmann_json
-      yaml-cpp
-      simdjson
+      yaml-cpp'
+      simdjson'
       reproc'
-      libsolv
-      curl
+      libsolv'
+      curl'
       libarchive
       zstd
       bzip2

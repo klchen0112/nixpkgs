@@ -12,18 +12,17 @@
   tl-expected,
   libmamba,
 }: let
-  yaml-cpp-static =
+  yaml-cpp' =
     yaml-cpp.override
     {
       static = true;
     };
-  libmamba-static =
+  libmamba' =
     libmamba.override
     {
       static = true;
-      yaml-cpp = yaml-cpp-static;
     };
-  reproc-static = reproc.overrideAttrs (
+  reproc' = reproc.overrideAttrs (
     oldAttrs: {
       cmakeFlags = [
         "-DCMAKE_INSTALL_LIBDIR=lib"
@@ -34,6 +33,7 @@
       ];
     }
   );
+  spdlog' = spdlog.override {staticBuild = true;};
 in
   stdenv.mkDerivation rec {
     pname = "micromamba";
@@ -49,14 +49,14 @@ in
     nativeBuildInputs = [cmake];
 
     buildInputs = [
-      reproc-static
-      spdlog
+      reproc'
+      spdlog'
       nlohmann_json
       tl-expected
       zstd
       bzip2
-      yaml-cpp-static
-      libmamba-static
+      yaml-cpp'
+      libmamba'
     ];
     cmakeFlags = [
       (lib.cmakeBool "BUILD_MICROMAMBA" true)
